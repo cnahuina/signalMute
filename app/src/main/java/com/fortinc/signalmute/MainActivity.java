@@ -8,12 +8,19 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.fortinc.signalmute.Model.MySingleton;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity {
 
+
+public class MainActivity extends AppCompatActivity {
     private TextView txvResult;
     public static final int REQUEST_CODE = 777;
 
@@ -52,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         String[] p = separarPalabras(palabra);
         for (int i = 0; i < p.length; i++) {
             Log.d("textsssa", "analizarTexto: " + p[i]);
+            postImage(p[i]);
         }
     }
 
@@ -75,5 +83,32 @@ public class MainActivity extends AppCompatActivity {
             partes[ind] += s.charAt(i);
         }
         return partes;
+    }
+
+    private void postImage(String palabra) {
+        String url = "http://c90f7dda.ngrok.io/rest/index.php/Buscar/buscarNDatos/"+palabra;
+
+        try {
+            JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                    new Response.Listener<JSONObject>()
+                    {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            // display response
+                            Log.d("Response", response.toString());
+                        }
+                    },
+                    new Response.ErrorListener()
+                    {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.d("Error.Response", error.getMessage());
+                        }
+                    }
+            );
+            MySingleton.getInstance(getApplicationContext()).addToRequestQueue(getRequest);
+        } catch (Exception e) {
+            Log.e("Post", e.getMessage());
+        }
     }
 }
