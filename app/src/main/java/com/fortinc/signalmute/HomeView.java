@@ -6,33 +6,48 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class HomeView extends AppCompatActivity implements View.OnClickListener{
 
-    private TextView txvResult;
-    private ImageView btnVoz;
     public static final int REQUEST_CODE = 777;
+    private TextView txvResult;
+    private ImageView btnVoz, ivTrad, ivUser;
+    private LinearLayout linlay, linlay1, linlay2;
+    Animation uptodown,downtoup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.home_view);
         inicializandoVariables();
     }
 
     private void inicializandoVariables() {
+        uptodown = AnimationUtils.loadAnimation(this,R.anim.uptodown);
+        downtoup = AnimationUtils.loadAnimation(this,R.anim.downtoup);
         txvResult = findViewById(R.id.txvResult);
         btnVoz = findViewById(R.id.ivButton);
+        btnVoz.setAnimation(uptodown);
         btnVoz.setOnClickListener(this);
+        linlay = findViewById(R.id.linlay);
+        linlay.setAnimation(downtoup);
+        linlay1 = findViewById(R.id.linlay1);
+        linlay1.setOnClickListener(this);
+        linlay2 = findViewById(R.id.linlay2);
+        linlay2.setOnClickListener(this);
+        ivTrad = findViewById(R.id.ivTrad);
+        ivTrad.setOnClickListener(this);
+        ivUser = findViewById(R.id.ivUser);
+        ivUser.setOnClickListener(this);
     }
 
     public void getSpeechInput() {
@@ -88,11 +103,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return partes;
     }
 
+    private void setupDesignBottomBar(int ivTrad, int ivUser){
+        this.ivTrad.setImageResource(ivTrad);
+        this.ivUser.setImageResource(ivUser);
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.ivButton:
                 getSpeechInput();
+                break;
+            case R.id.linlay1:
+                setupDesignBottomBar(R.drawable.traductor_ic, R.drawable.user_ic_off);
+                break;
+            case R.id.linlay2:
+                setupDesignBottomBar(R.drawable.traductor_ic_off, R.drawable.user_ic);
+                break;
+            case R.id.ivTrad:
+                setupDesignBottomBar(R.drawable.traductor_ic, R.drawable.user_ic_off);
+                break;
+            case R.id.ivUser:
+                setupDesignBottomBar(R.drawable.traductor_ic_off, R.drawable.user_ic);
                 break;
         }
     }

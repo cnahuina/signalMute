@@ -12,7 +12,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".startModule.StartView"></activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".HomeView">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
