@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.speech.RecognizerIntent;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +22,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.fortinc.signalmute.model.MySingleton;
+import com.fortinc.signalmute.model.señas;
 
 import org.json.JSONObject;
 
@@ -33,6 +36,11 @@ public class HomeView extends AppCompatActivity implements View.OnClickListener 
     private ImageView btnVoz, ivTrad, ivUser;
     private LinearLayout linlay, linlay1, linlay2;
     private Animation uptodown, downtoup;
+    private RecyclerView rvImage;
+    private ArrayList<String> lista = new ArrayList<>();
+    private Adapter adapter;
+    private static String urlBase = "http://d929f5c9.ngrok.io/rest/index.php/Buscar/buscarNDatos/";
+    int contador=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +66,11 @@ public class HomeView extends AppCompatActivity implements View.OnClickListener 
         ivTrad.setOnClickListener(this);
         ivUser = findViewById(R.id.ivUser);
         ivUser.setOnClickListener(this);
+        rvImage = findViewById(R.id.rvImages);
+        //adapter = new Adapter(lista, this);
+        //rvImage.setVisibility(View.VISIBLE);
+
+
     }
 
     public void getSpeechInput() {
@@ -77,8 +90,21 @@ public class HomeView extends AppCompatActivity implements View.OnClickListener 
         if (requestCode == REQUEST_CODE) {
             if (resultCode == RESULT_OK && data != null) {
                 ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+
+                android.view.ViewGroup.LayoutParams layoutParams = btnVoz.getLayoutParams();
+                layoutParams.width = 220; layoutParams.height = 220;
+                btnVoz.setLayoutParams(layoutParams);
+
                 txvResult.setText(result.get(0));
                 analizarTexto(result);
+                if (lista.size()!=0){
+                    adapter = new Adapter(lista, this);
+                    LinearLayoutManager linearLayoutManager =
+                            new LinearLayoutManager(this,
+                                    LinearLayoutManager.HORIZONTAL, false);
+                    rvImage.setLayoutManager(linearLayoutManager);
+                    rvImage.setAdapter(adapter);
+                }
             }
         }
     }
@@ -122,14 +148,15 @@ public class HomeView extends AppCompatActivity implements View.OnClickListener 
     }
 
     private void postImage(String palabra) {
-        String url = "http://c90f7dda.ngrok.io/rest/index.php/Buscar/buscarNDatos/" + palabra;
+        String url = urlBase + palabra;
         try {
             JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            // display response
-                            Log.d("Response", response.toString());
+                            String data = response.toString();
+                            Log.d("Response", data);
+                            trataDatos(data);
                         }
                     },
                     new Response.ErrorListener() {
@@ -145,11 +172,33 @@ public class HomeView extends AppCompatActivity implements View.OnClickListener 
         }
     }
 
+    private void trataDatos(String data) {
+        try {
+            String[] parts = data.split("\\[");
+            String part1 = parts[0];
+            String part2 = parts[1];
+            String[] parts2 = part2.split(",");
+            String part12 = parts2[0];
+            String part22 = parts2[1];
+            Log.d("discsca", part22);
+            String aRemplazar=part22.substring(10, part22.length()-1);
+            String remm = aRemplazar.replaceAll("\\\\", "");
+            Log.d("discscasasa", remm);
+            lista.add(remm);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ivButton:
+                contador++;
                 getSpeechInput();
+                /*if (contador%2==0){
+                    lista.clear();
+                }*/
                 break;
             case R.id.linlay1:
                 setupDesignBottomBar(R.drawable.traductor_ic, R.drawable.user_ic_off);

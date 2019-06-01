@@ -10,7 +10,8 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="70dp">
+        android:layout_height="70dp"
+        tools:ignore="MissingConstraints">
 
         <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
@@ -33,17 +34,31 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="32dp"
+        android:fontFamily="@font/poppinsmedium"
         android:hint="@string/inidicaciones"
-        android:textColor="#000"
-        android:textSize="20sp"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
-        android:fontFamily="@font/poppinsmedium"
-        app:layout_constraintBottom_toTopOf="@+id/ivButton"
+        android:textColor="#000"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvImages"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="40dp"
+        tools:listitem="@layout/item"
+        app:layout_constraintBottom_toTopOf="@+id/ivButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txvResult">
+
+    </androidx.recyclerview.widget.RecyclerView>
 
     <ImageView
         android:id="@+id/ivButton"

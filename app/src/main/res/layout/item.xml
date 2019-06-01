@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="250dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:elevation="10dp"
+    android:layout_margin="20dp"
+    app:cardCornerRadius="20dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/ivSena"
+            android:adjustViewBounds="true"
+            android:src="@drawable/logo_app"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/tvSena"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:visibility="gone"
+            android:textColor="@color/black"
+            android:fontFamily="@font/poppinsmedium"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:layout_alignParentBottom="true"
+            android:background="@color/overlayActionBarTrans"/>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

@@ -14,7 +14,8 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".startModule.StartView"></activity>
-        <activity android:name=".HomeView">
+        <activity android:name=".HomeView"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
