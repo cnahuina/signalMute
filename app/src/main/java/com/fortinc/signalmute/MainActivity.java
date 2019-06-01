@@ -2,36 +2,45 @@ package com.fortinc.signalmute;
 
 import android.content.Intent;
 import android.speech.RecognizerIntent;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private TextView txvResult;
+    private FloatingActionButton fab;
     public static final int REQUEST_CODE = 777;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        txvResult = (TextView) findViewById(R.id.txvResult);
+        inicializandoVariables();
     }
 
-    public void getSpeechInput(View view) {
+    private void inicializandoVariables() {
+        txvResult = findViewById(R.id.txvResult);
+        fab = findViewById(R.id.fab);
+        fab.setOnClickListener(this);
+    }
+
+    public void getSpeechInput() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(intent, REQUEST_CODE);
         } else {
-            Toast.makeText(this, "Your Device Don't Support Speech Input", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.dispositivo_no_soportado), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -75,5 +84,14 @@ public class MainActivity extends AppCompatActivity {
             partes[ind] += s.charAt(i);
         }
         return partes;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.fab:
+                getSpeechInput();
+                break;
+        }
     }
 }

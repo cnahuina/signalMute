@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">SignalMute</string>
+    <string name="dispositivo_no_soportado">Su dispositivo no admite entrada de voz</string>
 </resources>
