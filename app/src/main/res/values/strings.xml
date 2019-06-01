@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">SignalMute</string>
     <string name="dispositivo_no_soportado">Su dispositivo no admite entrada de voz</string>
+    <string name="inidicaciones">Presiona el microfono y deja que el dispositivo escuche para poder visualizar los pictogramas</string>
 </resources>

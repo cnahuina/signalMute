@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,7 +19,7 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private TextView txvResult;
-    private FloatingActionButton fab;
+    private ImageView btnVoz;
     public static final int REQUEST_CODE = 777;
 
     @Override
@@ -29,8 +31,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void inicializandoVariables() {
         txvResult = findViewById(R.id.txvResult);
-        fab = findViewById(R.id.fab);
-        fab.setOnClickListener(this);
+        btnVoz = findViewById(R.id.ivButton);
+        btnVoz.setOnClickListener(this);
     }
 
     public void getSpeechInput() {
@@ -89,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.fab:
+            case R.id.ivButton:
                 getSpeechInput();
                 break;
         }
