@@ -2,22 +2,26 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="250dp"
+    android:layout_height="600dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:elevation="10dp"
+    android:layout_gravity="center"
     android:layout_margin="20dp"
     app:cardCornerRadius="20dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center">
 
         <ImageView
             android:id="@+id/ivSena"
             android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
             android:src="@drawable/logo_app"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="600dp"
+            android:layout_height="600dp"
             tools:ignore="ContentDescription" />
 
         <TextView
