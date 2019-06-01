@@ -2,7 +2,9 @@ package com.fortinc.signalmute;
 
 import android.content.Intent;
 import android.speech.RecognizerIntent;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,16 +15,24 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.fortinc.signalmute.model.MySingleton;
+
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class HomeView extends AppCompatActivity implements View.OnClickListener{
+public class HomeView extends AppCompatActivity implements View.OnClickListener {
 
     public static final int REQUEST_CODE = 777;
     private TextView txvResult;
     private ImageView btnVoz, ivTrad, ivUser;
     private LinearLayout linlay, linlay1, linlay2;
-    Animation uptodown,downtoup;
+    private Animation uptodown, downtoup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +42,8 @@ public class HomeView extends AppCompatActivity implements View.OnClickListener{
     }
 
     private void inicializandoVariables() {
-        uptodown = AnimationUtils.loadAnimation(this,R.anim.uptodown);
-        downtoup = AnimationUtils.loadAnimation(this,R.anim.downtoup);
+        uptodown = AnimationUtils.loadAnimation(this, R.anim.uptodown);
+        downtoup = AnimationUtils.loadAnimation(this, R.anim.downtoup);
         txvResult = findViewById(R.id.txvResult);
         btnVoz = findViewById(R.id.ivButton);
         btnVoz.setAnimation(uptodown);
@@ -75,9 +85,12 @@ public class HomeView extends AppCompatActivity implements View.OnClickListener{
 
     private void analizarTexto(ArrayList<String> result) {
         String palabra = result.get(0);
-        String[] p = separarPalabras(palabra);
-        for (int i = 0; i < p.length; i++) {
-            Log.d("textsssa", "analizarTexto: " + p[i]);
+        if (!palabra.isEmpty()) {
+            String[] p = separarPalabras(palabra);
+            for (int i = 0; i < p.length; i++) {
+                Log.d("textsssa", "analizarTexto: " + p[i]);
+                postImage(p[i]);
+            }
         }
     }
 
@@ -103,14 +116,38 @@ public class HomeView extends AppCompatActivity implements View.OnClickListener{
         return partes;
     }
 
-    private void setupDesignBottomBar(int ivTrad, int ivUser){
+    private void setupDesignBottomBar(int ivTrad, int ivUser) {
         this.ivTrad.setImageResource(ivTrad);
         this.ivUser.setImageResource(ivUser);
     }
 
+    private void postImage(String palabra) {
+        String url = "http://c90f7dda.ngrok.io/rest/index.php/Buscar/buscarNDatos/" + palabra;
+        try {
+            JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            // display response
+                            Log.d("Response", response.toString());
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.d("Error.Response", error.getMessage());
+                        }
+                    }
+            );
+            MySingleton.getInstance(getApplicationContext()).addToRequestQueue(getRequest);
+        } catch (Exception e) {
+            Log.e("Post", e.getMessage());
+        }
+    }
+
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.ivButton:
                 getSpeechInput();
                 break;
