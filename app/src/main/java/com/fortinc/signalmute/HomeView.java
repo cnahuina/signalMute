@@ -36,7 +36,6 @@ public class HomeView extends AppCompatActivity implements View.OnClickListener 
     private TextView txvResult;
     private ImageView btnVoz, ivTrad, ivUser;
     private LinearLayout linlay, linlay1, linlay2;
-    private Animation uptodown, downtoup;
     private RecyclerView rvImage;
     private ArrayList<String> lista = new ArrayList<>();
     private Adapter adapter;
@@ -51,14 +50,10 @@ public class HomeView extends AppCompatActivity implements View.OnClickListener 
     }
 
     private void inicializandoVariables() {
-        uptodown = AnimationUtils.loadAnimation(this, R.anim.uptodown);
-        downtoup = AnimationUtils.loadAnimation(this, R.anim.downtoup);
         txvResult = findViewById(R.id.txvResult);
         btnVoz = findViewById(R.id.ivButton);
-        btnVoz.setAnimation(uptodown);
         btnVoz.setOnClickListener(this);
         linlay = findViewById(R.id.linlay);
-        linlay.setAnimation(downtoup);
         linlay1 = findViewById(R.id.linlay1);
         linlay1.setOnClickListener(this);
         linlay2 = findViewById(R.id.linlay2);
