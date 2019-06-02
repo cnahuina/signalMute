@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#fff</color>
-    <color name="colorPrimaryDark">#f4f4f4</color>
+    <color name="colorPrimary">#7570B3</color>
+    <color name="colorPrimaryDark">#7A75C4</color>
     <color name="colorAccent">#FF5722</color>
     <color name="white">#ffffff</color>
-    <color name="humo">#f4f4f4</color>
+    <color name="humo">#D6D5D5</color>
     <color name="black">#000000</color>
     <color name="overlayActionBarTrans">#4f0e0d0e</color>
 </resources>

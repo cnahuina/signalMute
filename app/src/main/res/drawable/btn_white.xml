@@ -2,7 +2,10 @@
     android:shape="rectangle">
 
     <corners
-        android:radius="@dimen/common_item_cornerRadius" />
+        android:bottomLeftRadius="0dp"
+        android:bottomRightRadius="0dp"
+        android:topLeftRadius="30dp"
+        android:topRightRadius="30dp"/>
 
     <solid android:color="@color/white"/>
 

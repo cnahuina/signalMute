@@ -26,6 +26,7 @@ import com.fortinc.signalmute.model.señas;
 
 import org.json.JSONObject;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -67,10 +68,6 @@ public class HomeView extends AppCompatActivity implements View.OnClickListener 
         ivUser = findViewById(R.id.ivUser);
         ivUser.setOnClickListener(this);
         rvImage = findViewById(R.id.rvImages);
-        //adapter = new Adapter(lista, this);
-        //rvImage.setVisibility(View.VISIBLE);
-
-
     }
 
     public void getSpeechInput() {
@@ -90,21 +87,13 @@ public class HomeView extends AppCompatActivity implements View.OnClickListener 
         if (requestCode == REQUEST_CODE) {
             if (resultCode == RESULT_OK && data != null) {
                 ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-
                 android.view.ViewGroup.LayoutParams layoutParams = btnVoz.getLayoutParams();
                 layoutParams.width = 220; layoutParams.height = 220;
                 btnVoz.setLayoutParams(layoutParams);
 
                 txvResult.setText(result.get(0));
                 analizarTexto(result);
-                if (lista.size()!=0){
-                    adapter = new Adapter(lista, this);
-                    LinearLayoutManager linearLayoutManager =
-                            new LinearLayoutManager(this,
-                                    LinearLayoutManager.HORIZONTAL, false);
-                    rvImage.setLayoutManager(linearLayoutManager);
-                    rvImage.setAdapter(adapter);
-                }
+                //aqui iva
             }
         }
     }
@@ -115,7 +104,7 @@ public class HomeView extends AppCompatActivity implements View.OnClickListener 
             String[] p = separarPalabras(palabra);
             for (int i = 0; i < p.length; i++) {
                 Log.d("textsssa", "analizarTexto: " + p[i]);
-                postImage(p[i]);
+                postImage(limpiarAcentos(p[i]));
             }
         }
     }
@@ -172,6 +161,18 @@ public class HomeView extends AppCompatActivity implements View.OnClickListener 
         }
     }
 
+    public static String limpiarAcentos(String cadena) {
+        String limpio =null;
+        if (cadena !=null) {
+            String valor = cadena;
+            valor = valor.toUpperCase();
+            limpio = Normalizer.normalize(valor, Normalizer.Form.NFD);
+            limpio = limpio.replaceAll("[^\\p{ASCII}(N\u0303)(n\u0303)(\u00A1)(\u00BF)(\u00B0)(U\u0308)(u\u0308)]", "");
+            limpio = Normalizer.normalize(limpio, Normalizer.Form.NFC);
+        }
+        return limpio;
+    }
+
     private void trataDatos(String data) {
         try {
             String[] parts = data.split("\\[");
@@ -185,6 +186,14 @@ public class HomeView extends AppCompatActivity implements View.OnClickListener 
             String remm = aRemplazar.replaceAll("\\\\", "");
             Log.d("discscasasa", remm);
             lista.add(remm);
+            if (lista.size()!=0){
+                adapter = new Adapter(lista, this);
+                LinearLayoutManager linearLayoutManager =
+                        new LinearLayoutManager(this,
+                                LinearLayoutManager.HORIZONTAL, false);
+                rvImage.setLayoutManager(linearLayoutManager);
+                rvImage.setAdapter(adapter);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -194,11 +203,8 @@ public class HomeView extends AppCompatActivity implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ivButton:
-                contador++;
                 getSpeechInput();
-                /*if (contador%2==0){
-                    lista.clear();
-                }*/
+                lista.clear();
                 break;
             case R.id.linlay1:
                 setupDesignBottomBar(R.drawable.traductor_ic, R.drawable.user_ic_off);
